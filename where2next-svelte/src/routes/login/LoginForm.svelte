@@ -14,7 +14,10 @@
     let session = await where2nextService.login(email, password);
     if (session) {
       loggedInUser.email = email;
+      loggedInUser.name = session.name;
+      loggedInUser._id = session._id;
       loggedInUser.token = session.token;
+      localStorage.donation = JSON.stringify(loggedInUser);
       console.log(`Session: ${JSON.stringify(session)}`);
       goto("/categories");
     } else {
@@ -29,6 +32,7 @@
     {#if message}
       <Message {message} />
     {/if}
+    <!-- svelte-ignore event_directive_deprecated -->
     <form on:submit|preventDefault={login}>
       <UserCredentials bind:email bind:password />
       <button class="button">Log In</button>

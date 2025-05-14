@@ -3,6 +3,7 @@
     import { loggedInUser } from "$lib/runes.svelte";
   
     loggedInUser.email = "";
+    loggedInUser.token = "";
     goto("/");
   </script>
   
