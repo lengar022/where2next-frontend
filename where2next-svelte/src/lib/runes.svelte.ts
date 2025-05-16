@@ -1,3 +1,5 @@
+import type { Category } from "./types/where2next-types";
+
 export const subTitle = $state({ text: "" });
 
 export const loggedInUser = $state({ 
@@ -11,5 +13,7 @@ export const loggedInUser = $state({
     _id: "",
     title: ""
 });
+
+export const currentCategories = $state({ categories: [] as Category[] });
 
   

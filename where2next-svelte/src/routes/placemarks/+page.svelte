@@ -2,6 +2,7 @@
     import { loggedInUser, subTitle, selectedCategory } from "$lib/runes.svelte";
     import { where2nextService } from "$lib/services/where2next-service";
     import PlacemarkCards from "./PlacemarkCards.svelte";
+    import PlacemarkForm from "./PlacemarkForm.svelte";
     import { onMount } from "svelte";
     import type { Placemark } from "$lib/types/where2next-types";
 
@@ -15,4 +16,8 @@
     });
 </script>
 
-<PlacemarkCards {placemarkList} />
+<section class="section columns is-flex is-centered is-multiline">
+    <PlacemarkCards {placemarkList} />
+</section>
+
+<PlacemarkForm />

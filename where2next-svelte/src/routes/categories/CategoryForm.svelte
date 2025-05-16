@@ -9,12 +9,13 @@
   async function addCategory() {
     console.log(`New category added: ${categoryToAdd}`);
     if (categoryToAdd) {
-        const success = await where2nextService.createCategory(categoryToAdd, loggedInUser._id, loggedInUser.token);
+        const success: boolean = await where2nextService.createCategory(categoryToAdd, loggedInUser._id, loggedInUser.token);
         if (!success) {
           message = "Failed to add category - some error occurred";
           return;
         }
         message = `You added a new category: ${categoryToAdd}`;
+        categoryToAdd = "";
         goto("/categories");
       } else {
       message = "Please give the category a name";

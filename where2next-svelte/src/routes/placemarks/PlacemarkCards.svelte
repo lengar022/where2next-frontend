@@ -10,8 +10,7 @@
 
 </script>
 
-<section class="section columns is-flex is-centered is-multiline">
-    {#each placemarkList as placemark}
+{#each placemarkList as placemark}
     <div class="column is-4">
         <div class="card">
             <header class="card-header">
@@ -87,5 +86,4 @@
             document.getElementById(`card${placemark._id}-fileselect`).innerHTML += delete_icon_html;
         }
     </script>
-    {/each}
-</section>
+{/each}

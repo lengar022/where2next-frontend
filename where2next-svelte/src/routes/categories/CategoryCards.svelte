@@ -1,8 +1,7 @@
 <script lang="ts">
     import { goto } from "$app/navigation";
-    import { selectedCategory } from "$lib/runes.svelte";
-    import type { Category } from "$lib/types/where2next-types";
-    let { categoryList = [] } = $props();
+    import { where2nextService } from "$lib/services/where2next-service";
+    import { loggedInUser, selectedCategory, currentCategories } from "$lib/runes.svelte";
 
     let categoryId = $state("");
     let categoryName = $state("");
@@ -16,11 +15,16 @@
 
     async function deleteCategory(categoryId: string) {
         console.log(`deleteCategory function ran: ${categoryId}`);
+        const success: boolean = await where2nextService.deleteCategory(categoryId, loggedInUser.token);
+        if (success) {
+            goto("/categories");
+        } else {
+            return;
+        }
     }
 </script>
 
-<section class="section columns is-flex is-centered is-multiline">
-    {#each categoryList as category}
+{#each currentCategories.categories as category}
     <div class="column is-4">
         <div class="card">
             <header class="card-header">
@@ -29,6 +33,7 @@
             <div class="card-image">
             <figure class="image is-square is-480by480">
                 <img id="category-image-{category._id}" src={category.img} alt="category-img">
+                <button type="submit" class="button is-info">Upload</button>
             </figure>
             </div>
             <div class="card-content">  
@@ -38,9 +43,6 @@
                     <span class="file-cta">
                     <span class="file-icon">
                         <i class="fas fa-upload"></i>
-                    </span>
-                    <span class="file-label">
-                        Choose a file…
                     </span>
                     </span>
                     <span id="file-name-{category._id}" class="file-name"></span>
@@ -55,7 +57,6 @@
             </footer>
         </div>
     </div>
-    {/each}
-</section>
+{/each}
 
   

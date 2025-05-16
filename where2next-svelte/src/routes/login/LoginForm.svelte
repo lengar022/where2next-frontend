@@ -13,12 +13,6 @@
     console.log(`attempting to log in email: ${email} with password: ${password}`);
     let session = await where2nextService.login(email, password);
     if (session) {
-      loggedInUser.email = email;
-      loggedInUser.name = session.name;
-      loggedInUser._id = session._id;
-      loggedInUser.token = session.token;
-      localStorage.donation = JSON.stringify(loggedInUser);
-      console.log(`Session: ${JSON.stringify(session)}`);
       goto("/categories");
     } else {
       email = "";

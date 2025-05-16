@@ -1,8 +1,44 @@
 import axios from "axios";
 import type { Session, User, Category } from "$lib/types/where2next-types";
+import { loggedInUser, currentCategories } from "$lib/runes.svelte";
 
 export const where2nextService = {
   baseUrl: "http://localhost:3000",
+
+  saveSession(session: Session, email: string) {
+    loggedInUser.email = email;
+    loggedInUser.name = session.name;
+    loggedInUser.token = session.token;
+    loggedInUser._id = session._id;
+    localStorage.where2next = JSON.stringify(loggedInUser);
+  },
+
+  async restoreSession() {
+    const savedLoggedInUser = localStorage.where2next;
+    if (savedLoggedInUser) {
+      const session = JSON.parse(savedLoggedInUser);
+      loggedInUser.email = session.email;
+      loggedInUser.name = session.name;
+      loggedInUser.token = session.token;
+      loggedInUser._id = session._id;
+    }
+    await this.refreshWhere2NextInfo();
+  },
+
+  clearSession() {
+    currentCategories.categories = [];
+    loggedInUser.email = "";
+    loggedInUser.name = "";
+    loggedInUser.token = "";
+    loggedInUser._id = "";
+    localStorage.removeItem("where2next");
+  },
+
+  async refreshWhere2NextInfo() {
+    if (loggedInUser.token) {
+    currentCategories.categories = await this.getUserCategories(loggedInUser._id, loggedInUser.token);
+    }
+  },
 
   async signup(user: User): Promise<boolean> {
     try {
@@ -24,6 +60,8 @@ export const where2nextService = {
           token: response.data.token,
           _id: response.data._id
         };
+        this.saveSession(session, email);
+        await this.refreshWhere2NextInfo();
         return session;
       }
       return null;
@@ -37,6 +75,19 @@ export const where2nextService = {
     try {
       axios.defaults.headers.common["Authorization"] = "Bearer " + token;
       const response = await axios.post(`${this.baseUrl}/api/categories`, { title, userid });
+      await this.refreshWhere2NextInfo();
+      return response.status == 201;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  },
+
+  async deleteCategory(userid: string, token: string) {
+    try {
+      axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+      const response = await axios.delete(`${this.baseUrl}/api/categories/${userid}`);
+      await this.refreshWhere2NextInfo();
       return response.status == 201;
     } catch (error) {
       console.log(error);
