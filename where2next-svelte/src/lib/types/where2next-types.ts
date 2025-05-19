@@ -30,3 +30,16 @@ export interface Category {
   userid: string;
   placemarks: Array<Placemark> | Array<string>;
 }
+
+interface ConfigOptions {
+  cloud?: "";
+  url?: "";
+}
+
+// Global config options
+export interface GlobalCloudinaryConfig extends ConfigOptions {
+  analytics?: string;
+  uploadPreset?: string;
+  cloudName?: string;
+  apiKey?: string;
+}

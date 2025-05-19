@@ -8,7 +8,7 @@
   import { configureCloudinary } from 'svelte-cloudinary';
 
   configureCloudinary({
-    cloudName: 'cloudName',
+    cloudName: "dl4yq0hkm",
   });
 
   onMount(async () => {

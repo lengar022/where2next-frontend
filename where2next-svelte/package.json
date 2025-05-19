@@ -34,6 +34,7 @@
 		"vite": "^6.3.5"
 	},
 	"dependencies": {
-		"@cloudinary/url-gen": "^1.21.0"
+		"@cloudinary/url-gen": "^1.21.0",
+		"next-cloudinary": "^6.16.0"
 	}
 }

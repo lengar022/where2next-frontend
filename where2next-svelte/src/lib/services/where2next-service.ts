@@ -83,10 +83,22 @@ export const where2nextService = {
     }
   },
 
-  async deleteCategory(userid: string, token: string) {
+  async updateCategoryImage(id: string, url: string, token: string) {
     try {
       axios.defaults.headers.common["Authorization"] = "Bearer " + token;
-      const response = await axios.delete(`${this.baseUrl}/api/categories/${userid}`);
+      const response = await axios.post(`${this.baseUrl}/api/categories/${id}/imageurl`, { url });
+      await this.refreshWhere2NextInfo();
+      return response.status == 201;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  },
+
+  async deleteCategory(id: string, token: string) {
+    try {
+      axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+      const response = await axios.delete(`${this.baseUrl}/api/categories/${id}`);
       await this.refreshWhere2NextInfo();
       return response.status == 201;
     } catch (error) {
