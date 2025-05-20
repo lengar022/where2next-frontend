@@ -98,9 +98,22 @@ export const where2nextService = {
   async deleteCategory(id: string, token: string) {
     try {
       axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+      await axios.delete(`${this.baseUrl}/api/categories/${id}/imageurl`);
       const response = await axios.delete(`${this.baseUrl}/api/categories/${id}`);
       await this.refreshWhere2NextInfo();
       return response.status == 201;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  },
+
+  async deleteCategoryImage(id: string, token: string) {
+    try {
+      axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+      const response = await axios.delete(`${this.baseUrl}/api/categories/${id}/imageurl`);
+      await this.refreshWhere2NextInfo();
+      return response.status == 204;
     } catch (error) {
       console.log(error);
       return false;
