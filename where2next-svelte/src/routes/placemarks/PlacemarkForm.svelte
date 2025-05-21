@@ -3,7 +3,8 @@
   import { loggedInUser, selectedCategory } from "$lib/runes.svelte";
   import { where2nextService } from "$lib/services/where2next-service";
   import Coordinates from "$lib/ui/Coordinates.svelte";
-  
+  let { newPlacemarkEvent = null } = $props();
+
   let name = $state("");
   let description = $state("");
   let lat = $state(52.160858);
@@ -20,11 +21,12 @@
     }
     console.log(`New placemark added: ${name}`);
     if ( name && description ) {
-        const success: boolean = await where2nextService.createPlacemark(placemarkToAdd, loggedInUser.token);
-        if (!success) {
+        const placemark = await where2nextService.createPlacemark(placemarkToAdd, loggedInUser.token);
+        if (!placemark) {
           message = "Failed to add placemark - some error occurred";
           return;
         }
+        if (newPlacemarkEvent) newPlacemarkEvent(placemark);
         message = `You added a new placemark: ${name}`;
       } else {
       message = "Please give the placemark a name";

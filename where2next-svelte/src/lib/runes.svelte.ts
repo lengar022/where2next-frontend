@@ -6,7 +6,9 @@ export const loggedInUser = $state({
     email: "",
     name: "",
     token: "",
-    _id: ""
+    _id: "",
+    categoryId: "",
+    categoryName: "",
  });
 
  export const selectedCategory = $state({ 

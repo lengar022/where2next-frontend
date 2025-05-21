@@ -5,6 +5,7 @@
 
     async function openCategory(categoryId: string, categoryName : string) {
         console.log(`openCategory function ran: ${categoryName}`);
+        where2nextService.saveSessionWithCategory(categoryId, categoryName);
         selectedCategory._id = categoryId;
         selectedCategory.title = categoryName;
         goto("/placemarks");

@@ -1,6 +1,6 @@
 import axios from "axios";
 import type { Session, User, Category, PlacemarkSpec } from "$lib/types/where2next-types";
-import { loggedInUser, currentCategories } from "$lib/runes.svelte";
+import { loggedInUser, currentCategories, selectedCategory } from "$lib/runes.svelte";
 
 export const where2nextService = {
   baseUrl: "http://localhost:3000",
@@ -13,6 +13,12 @@ export const where2nextService = {
     localStorage.where2next = JSON.stringify(loggedInUser);
   },
 
+  saveSessionWithCategory(id: string, name: string) {
+    loggedInUser.categoryId = id;
+    loggedInUser.categoryName = name;
+    localStorage.where2next = JSON.stringify(loggedInUser);
+  },
+
   async restoreSession() {
     const savedLoggedInUser = localStorage.where2next;
     if (savedLoggedInUser) {
@@ -21,6 +27,8 @@ export const where2nextService = {
       loggedInUser.name = session.name;
       loggedInUser.token = session.token;
       loggedInUser._id = session._id;
+      loggedInUser.categoryId = session.categoryId;
+      loggedInUser.categoryName = session.categoryName;
     }
     await this.refreshWhere2NextInfo();
   },
@@ -31,12 +39,15 @@ export const where2nextService = {
     loggedInUser.name = "";
     loggedInUser.token = "";
     loggedInUser._id = "";
+    loggedInUser.categoryId = "";
+    loggedInUser.categoryName = "";
     localStorage.removeItem("where2next");
   },
 
   async refreshWhere2NextInfo() {
     if (loggedInUser.token) {
       currentCategories.categories = await this.getUserCategories(loggedInUser._id, loggedInUser.token);
+      selectedCategory._id = loggedInUser.categoryId;
     }
   },
 
@@ -159,12 +170,27 @@ export const where2nextService = {
       console.log(`Adding placemark ${placemark.name} to category id ${placemark.categoryid}`);
       const response = await axios.post(`${this.baseUrl}/api/categories/${placemark.categoryid}/placemarks`, placemark);
       await this.refreshWhere2NextInfo();
-      return response.status == 201;
+      if (response.status == 201) {
+      return response.data;
+      } else {
+      return false;
+      }
     } catch (error) {
       console.log(error);
       return false;
     }
   },
+
+  async getPlacemarksByCategory(id: string, token: string) {
+    try {
+      axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+      const response = await axios.get(`${this.baseUrl}/api/placemarks/category/${id}`);
+      return response.data;
+    } catch (error) {
+    console.log(error);
+      return null;
+    }
+  },  
 
   async deletePlacemark(id: string, token: string) {
     try {
