@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { Session, User, Category } from "$lib/types/where2next-types";
+import type { Session, User, Category, PlacemarkSpec } from "$lib/types/where2next-types";
 import { loggedInUser, currentCategories } from "$lib/runes.svelte";
 
 export const where2nextService = {
@@ -36,7 +36,7 @@ export const where2nextService = {
 
   async refreshWhere2NextInfo() {
     if (loggedInUser.token) {
-    currentCategories.categories = await this.getUserCategories(loggedInUser._id, loggedInUser.token);
+      currentCategories.categories = await this.getUserCategories(loggedInUser._id, loggedInUser.token);
     }
   },
 
@@ -101,7 +101,7 @@ export const where2nextService = {
       await axios.delete(`${this.baseUrl}/api/categories/${id}/imageurl`);
       const response = await axios.delete(`${this.baseUrl}/api/categories/${id}`);
       await this.refreshWhere2NextInfo();
-      return response.status == 201;
+      return response.status == 204;
     } catch (error) {
       console.log(error);
       return false;
@@ -152,4 +152,65 @@ export const where2nextService = {
       return [];
     }
   },
+
+  async createPlacemark(placemark: PlacemarkSpec, token: string) {
+    try {
+      axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+      console.log(`Adding placemark ${placemark.name} to category id ${placemark.categoryid}`);
+      const response = await axios.post(`${this.baseUrl}/api/categories/${placemark.categoryid}/placemarks`, placemark);
+      await this.refreshWhere2NextInfo();
+      return response.status == 201;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  },
+
+  async deletePlacemark(id: string, token: string) {
+    try {
+      axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+      await axios.delete(`${this.baseUrl}/api/placemarks/${id}/imageurl`);
+      const response = await axios.delete(`${this.baseUrl}/api/placemarks/${id}`);
+      await this.refreshWhere2NextInfo();
+      return response.status == 204;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  },
+
+  async updatePlacemarkImage(id: string, url: string, token: string) {
+    try {
+      axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+      const response = await axios.post(`${this.baseUrl}/api/placemarks/${id}/imageurl`, { url });
+      await this.refreshWhere2NextInfo();
+      return response.status == 201;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  },
+
+  async deletePlacemarkImage(id: string, token: string) {
+    try {
+      axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+      const response = await axios.delete(`${this.baseUrl}/api/placemarks/${id}/imageurl`);
+      await this.refreshWhere2NextInfo();
+      return response.status == 204;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  },
+
+  async getPlacemarkForecast(id: string, token: string) {
+    try {
+      axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+      const response = await axios.get(`${this.baseUrl}/api/placemarks/${id}/weather`);
+      return response.data;
+    } catch (error) {
+    console.log(error);
+      return null;
+    }
+  },  
 };

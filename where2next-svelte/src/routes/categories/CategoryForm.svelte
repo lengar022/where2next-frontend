@@ -16,7 +16,6 @@
         }
         message = `You added a new category: ${categoryToAdd}`;
         categoryToAdd = "";
-        goto("/categories");
       } else {
       message = "Please give the category a name";
     }

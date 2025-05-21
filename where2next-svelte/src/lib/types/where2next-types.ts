@@ -13,14 +13,17 @@ export interface User {
   _id?: string;
 }
 
-export interface Placemark {
-  _id: string;
+export interface PlacemarkSpec {
   name: string;
   description: string;
   latitude: number;
   longitude: number;
-  img: string;
   categoryid: string;
+}
+
+export interface PlacemarkSpecPlus extends PlacemarkSpec{
+  _id: string;
+  img: string;
 }
 
 export interface Category {
@@ -28,7 +31,13 @@ export interface Category {
   title: string;
   img: string;
   userid: string;
-  placemarks: Array<Placemark> | Array<string>;
+  placemarks: Array<PlacemarkSpecPlus>;
+}
+
+export interface Forecast {
+  day: string;
+  icon: string;
+  temp: number;
 }
 
 interface ConfigOptions {

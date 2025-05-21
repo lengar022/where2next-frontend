@@ -13,11 +13,6 @@
     async function deleteCategory(categoryId: string) {
         console.log(`deleteCategory function ran: ${categoryId}`);
         const success: boolean = await where2nextService.deleteCategory(categoryId, loggedInUser.token);
-        if (success) {
-            goto("/categories");
-        } else {
-            return;
-        }
     }
     
     let imagePath = $state("fff");

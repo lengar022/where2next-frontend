@@ -1,4 +1,4 @@
-import type { Category } from "./types/where2next-types";
+import type { Category, Forecast, PlacemarkSpecPlus } from "./types/where2next-types";
 
 export const subTitle = $state({ text: "" });
 
@@ -12,8 +12,17 @@ export const loggedInUser = $state({
  export const selectedCategory = $state({ 
     _id: "",
     title: ""
+}); 
+
+export const selectedPlacemark = $state({ 
+    _id: "",
+    name: ""
 });
 
+export const weatherForecast = $state({ days: [] as Forecast[] });
+
 export const currentCategories = $state({ categories: [] as Category[] });
+
+export const currentPlacemarks = $state({ placemarks: [] as PlacemarkSpecPlus[] });
 
   
