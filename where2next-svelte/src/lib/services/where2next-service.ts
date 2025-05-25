@@ -3,7 +3,8 @@ import type { Session, User, Category, PlacemarkSpec } from "$lib/types/where2ne
 import { loggedInUser, currentCategories, selectedCategory } from "$lib/runes.svelte";
 
 export const where2nextService = {
-  baseUrl: "http://localhost:3000",
+  // baseUrl: "http://localhost:3000",
+  baseUrl: "https://where2next-demo.onrender.com",
 
   saveSession(session: Session, email: string) {
     loggedInUser.email = email;
