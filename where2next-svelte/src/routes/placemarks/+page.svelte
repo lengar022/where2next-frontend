@@ -27,7 +27,7 @@
         }
         console.log(currentPlacemarks.placemarks);
         currentPlacemarks.placemarks.forEach((placemark: PlacemarkSpecPlus) => {
-        map.addMarker(placemark.latitude, placemark.longitude, placemark.name);
+            map.addMarker(placemark.latitude, placemark.longitude, placemark.name);
         });
     });
 </script>

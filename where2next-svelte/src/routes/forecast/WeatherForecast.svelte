@@ -1,14 +1,15 @@
 <script lang="ts">
     import { weatherForecast } from "$lib/runes.svelte";
+    import TempChart from "$lib/ui/TempChart.svelte";
 </script>
 
 <section class="section columns is-flex is-centered">
-  <div class="column is-6">
+  <div class="column is-9">
       <div class="card">
           <header class="card-header">
               <p class="card-header-title has-text-primary is-size-4 is-centered">Forecast</p>
           </header>
-          <div class="card-content"> 
+          <div class="card-content has-text-centered"> 
                 <table class="table is-fullwidth">
                     <tbody id="forecast-body">
                         <tr>
@@ -25,13 +26,10 @@
                             </td>
                             {/each}
                         </tr>
-                        <tr>
-                            {#each weatherForecast.days as weekday}
-                            <th class="has-text-centered has-text-warning">{weekday.temp}℃</th>
-                            {/each}
-                        </tr>
                     </tbody>
                 </table>
+                <p class="card-header-title has-text-primary is-size-4 is-centered">Temperature</p>
+                <TempChart />
           </div>
       </div>
   </div>

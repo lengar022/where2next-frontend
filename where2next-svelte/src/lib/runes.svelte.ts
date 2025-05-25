@@ -23,6 +23,8 @@ export const selectedPlacemark = $state({
 
 export const weatherForecast = $state({ days: [] as Forecast[] });
 
+export const allCategories = $state({ categories: [] as Category[] });
+
 export const currentCategories = $state({ categories: [] as Category[] });
 
 export const currentPlacemarks = $state({ placemarks: [] as PlacemarkSpecPlus[] });

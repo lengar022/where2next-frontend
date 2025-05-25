@@ -142,7 +142,7 @@ export const where2nextService = {
     }
   },  
 
-  async getCategoryById(id: string, token: string) {
+  async getCategoryById(id: string, token: string): Promise<Category | null>{
     try {
       axios.defaults.headers.common["Authorization"] = "Bearer " + token;
       const response = await axios.get(`${this.baseUrl}/api/categories/${id}`);

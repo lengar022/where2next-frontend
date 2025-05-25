@@ -3,10 +3,8 @@
   import { onMount } from "svelte";
   import type { Control, Map as LeafletMap } from "leaflet";
 
-  let { height = 70 } = $props();
-  let id = "home-map-id";
-  let location = { lat: 53.2734, lng: -7.7783203 };
-  let zoom = 7;
+  let { height = 70, id = "main-map-id", latitude = 53.2734, longitude = -7.7783203 , name = "map-name", zoom = 7} = $props();
+  let location = { lat: latitude, lng: longitude }
   let minZoom = 7;
   let activeLayer = "Terrain";
   
@@ -23,6 +21,14 @@
     const popup = L.popup({ autoClose: false, closeOnClick: false });
     popup.setContent(popupText);
     marker.bindPopup(popup);
+  }
+
+   export function removeMarkers() {
+    imap.eachLayer((layer) => {
+      if (layer instanceof L.Marker) {
+        layer.remove();
+      }
+    });
   }
   
   onMount(async () => {
@@ -50,6 +56,9 @@
       layers: [defaultLayer]
     });
     control = leaflet.control.layers(baseLayers, overlays).addTo(imap);
+    if (id!="main-map-id") {
+      addMarker(location.lat, location.lng, name)
+    }
   });
 </script>
 

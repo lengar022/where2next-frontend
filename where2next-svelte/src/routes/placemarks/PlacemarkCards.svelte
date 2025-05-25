@@ -3,6 +3,7 @@
     import { onMount } from "svelte";
     import { where2nextService } from "$lib/services/where2next-service";
     import { loggedInUser , selectedCategory, currentCategories, weatherForecast, selectedPlacemark} from "$lib/runes.svelte";
+    import LeafletMap from "$lib/ui/LeafletMap.svelte";
     import type { Category, PlacemarkSpecPlus } from "$lib/types/where2next-types";
 
     let imagePath = $state("fff");
@@ -67,6 +68,7 @@
                     <header class="card-header">
                         <p class="card-header-title is-size-4 is-centered">{placemark.name}</p>
                     </header>
+                    <LeafletMap height={30} id={placemark._id} latitude={placemark.latitude} longitude={placemark.longitude} name={placemark.name} zoom={9}/>
                     <div class="card-image">
                     <figure class="image is-square is-480by480">
                         <img id="placemark-image-{placemark._id}" src={placemark.img} alt="placemark-img">
