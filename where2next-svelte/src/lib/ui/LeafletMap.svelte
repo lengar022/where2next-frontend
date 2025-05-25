@@ -1,7 +1,9 @@
 <script lang="ts">
-  import "leaflet/dist/leaflet.css";
+  // import "leaflet/dist/leaflet.css";
   import { onMount } from "svelte";
   import type { Control, Map as LeafletMap } from "leaflet";
+  import markerIconPng from "leaflet/dist/images/marker-icon.png";
+  import {Icon} from 'leaflet'
 
   let { height = 70, id = "main-map-id", latitude = 53.2734, longitude = -7.7783203 , name = "map-name", zoom = 7} = $props();
   let location = { lat: latitude, lng: longitude }
